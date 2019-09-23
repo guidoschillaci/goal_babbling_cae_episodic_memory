@@ -26,15 +26,15 @@ class InterestModel():
 		if ran < 0.85 and np.sum(self.learning_progress)>0: # 70% of the times
 			# select goal with highest interest factor			
 			goal_idx = self.get_most_interesting_goal_index()
-			print 'Selected most interesting goal.'
+			print ('Selected most interesting goal.')
 		else:
 			# select random goal
 			goal_idx = random.randint(0, self.goals_size*self.goals_size-1)
-			print 'Selected random goal.'
+			print ('Selected random goal.')
 
 		goal_x = goal_idx / self.goals_size  
 		goal_y = goal_idx % self.goals_size
-		print 'Goal idx: ', goal_idx, ' x: ', goal_x, ' y: ', goal_y
+		print ('Goal idx: ', goal_idx, ' x: ', goal_x, ' y: ', goal_y)
 		return goal_idx, goal_x, goal_y
 
 	def update_competences(self, goal_id_x, goal_id_y, prediction_error):
@@ -62,15 +62,15 @@ class InterestModel():
 				self.learning_progress[goal_id] = np.exp( - np.fabs (ped) )
 
 			else:
-				print 'wrong competence measure! Specify either euclidean or exponential'
+				print ('wrong competence measure! Specify either euclidean or exponential')
 
-			print 'Learning progress of goal [0-1] ', goal_id, ', idx: ', goal_id_x, ' idy:', goal_id_y, ' is: ', self.learning_progress[goal_id], ' ped ', ped, ' PE: ', prediction_error
+			print ('Learning progress of goal [0-1] ', goal_id, ', idx: ', goal_id_x, ' idy:', goal_id_y, ' is: ', self.learning_progress[goal_id], ' ped ', ped, ' PE: ', prediction_error)
 
 			# interest_factors = interest_factors / np.sum(interest_factors)
 			# threshold interest factor
 			if self.learning_progress[goal_id] < 0.01:
 				self.learning_progress[goal_id] = 0.0
-				print 'Learning process on goal', goal_id, ' set to 0'
+				print ('Learning process on goal', goal_id, ' set to 0')
 #		sum_lp = np.sum(self.learning_progress)
 #		if sum_lp !=0:
 #			self.learning_progress = self.learning_progress / sum_lp
