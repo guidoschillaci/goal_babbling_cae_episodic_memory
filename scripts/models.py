@@ -34,7 +34,7 @@ class Models():
 		commands = []
 		test_pos = []
 		with gzip.open(file_name, 'rb') as memory_file:
-			memories = pickle.load(memory_file)
+			memories = pickle.load(memory_file, encoding='bytes'))
 			print ('converting data...')
 			count = 0
 			for memory in memories:
