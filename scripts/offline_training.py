@@ -58,7 +58,7 @@ class OfflineTraining():
 			session = tf.compat.v1.Session(config=config)
 
 	def run (self):
-		print 'starting time', datetime.datetime.now()
+		print ('starting time', datetime.datetime.now())
 		#configure_keras()
 
 		directory='./pretrained_models/'
