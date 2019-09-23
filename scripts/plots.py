@@ -28,7 +28,7 @@ def imscatter(x, y, ax, imageData, zoom, imageSize):
 
 def plot_cvh(convex_hull, dimensions, title, iteration, log_goal, num_goals, save = True, show = False):
 	fig2 = plt.figure(figsize=(10, 10))
-	print log_goal
+	print (log_goal)
 	if dimensions ==2:
 
 		#g = []
@@ -107,14 +107,14 @@ def plot_simple(data, text, save = True, show = False):
 	plt.close()
 
 def plot_som(decoder, som, data):
-	print "Plotting decoded SOM nodes"
+	print ("Plotting decoded SOM nodes")
 	goal_codes = None
 	goal_codes =  som._weights.reshape(len(som._weights)*len(som._weights[0]), len(som._weights[0][0]) )
 #	print som._weights.shape, " ", goal_codes.shape
 	decoded = decoder.predict(goal_codes[:])
-	print decoded.shape
+	print (decoded.shape)
 	s = decoded.reshape(len(som._weights), len(som._weights[0]), len(decoded[0]), len(decoded[0]), 3)
-	print s.shape
+	print (s.shape)
 
 	fig1 = plt.figure(figsize=(len(som._weights), len(som._weights)))
 	#fig, axes = plt.subplots( len(som._weights), len(som._weights))
@@ -129,9 +129,9 @@ def plot_som(decoder, som, data):
 def plot_som_scatter(encoder, som, data):
 	encoded_imgs = encoder.predict(data)
 	fig2 = plt.figure(figsize=(10, 10))
-	print som._weights
+	print (som._weights)
 	goal_codes =  som._weights.reshape(len(som._weights)*len(som._weights[0]), len(som._weights[0][0]) )
-	print goal_codes
+	print (goal_codes)
 	plt.subplot(1, 2, 1)
 	plt.scatter(encoded_imgs[:,0],encoded_imgs[:,1], s=2, color='g') 
 	plt.scatter(goal_codes[:,0],goal_codes[:,1], s=6, color='r') 
@@ -204,15 +204,15 @@ def plots_full_model(full_model, full_inv_model, full_fwd_model, commands, origi
 
 	predicted_cmd = full_inv_model.predict(original_images[:])
 
-	print np.hstack(( commands, predicted_cmd))
-	print 'total error pred-cmd ', np.linalg.norm(predicted_cmd-commands)
-	print 'average error pred-cmd', np.mean( np.linalg.norm(predicted_cmd-commands, axis=1))
+	print (np.hstack(( commands, predicted_cmd)))
+	print ('total error pred-cmd ', np.linalg.norm(predicted_cmd-commands))
+	print ('average error pred-cmd', np.mean( np.linalg.norm(predicted_cmd-commands, axis=1)))
 
 	pre_predicted_cmd = full_inv_model.predict(predicted_images[:])
 
-	print np.hstack(( predicted_cmd, pre_predicted_cmd))
-	print 'total err pred_img- code ', np.linalg.norm(pre_predicted_cmd-predicted_cmd)
-	print 'average error pred_img- code ', np.mean( np.linalg.norm(pre_predicted_cmd-predicted_cmd, axis=1))
+	print (np.hstack(( predicted_cmd, pre_predicted_cmd)) )
+	print ('total err pred_img- code ', np.linalg.norm(pre_predicted_cmd-predicted_cmd) )
+	print ('average error pred_img- code ', np.mean( np.linalg.norm(pre_predicted_cmd-predicted_cmd, axis=1)) )
 
 
 
@@ -242,7 +242,7 @@ def plots_cae_decoded(decoder, test_images_codes, original_images, image_size=64
 
 def plots_cae(autoencoder, encoder, decoder, train_images, test_images, image_size,channels=1):
 
-	print 'Plotting CAE test images and decoded'
+	print ('Plotting CAE test images and decoded')
 	n_figures = 5
 	'''
 	decoded_imgs = autoencoder.predict(test_images)
