@@ -453,7 +453,7 @@ class Models():
 
 
 	def build_inverse_model(self,  image_size, input_dim=2, max_pool_size = 2, conv_size = 3, channels=1):
-		print 'building inverse model...'
+		print ( 'building inverse model...')
 
 		input_img = Input(shape=(image_size, image_size, channels))
 		x = Conv2D(4, (conv_size, conv_size), activation='relu', padding='same')(input_img) # tanh?
@@ -492,13 +492,13 @@ class Models():
 		#inv_model.compile(optimizer='adadelta', loss='mean_squared_error')
 		inv_model.compile(optimizer='adam', loss='mean_squared_error')
 		#inv_model.compile(optimizer=sgd, loss='mean_squared_error')		
-		print 'inverse model'
+		print ('inverse model')
 		inv_model.summary()
 		return inv_model
 
 
 	def build_inverse_code_model(self,  code_size, input_dim=2, max_pool_size = 2, conv_size = 3, channels=1):
-		print 'building inverse code model...'
+		print ('building inverse code model...')
 
 		input_code = Input(shape=(code_size,), name = 'inv_input')
 		x = Dense(code_size, activation='tanh')(input_code)
@@ -509,33 +509,33 @@ class Models():
 		inv_model = Model(input_code, command)
 		sgd = optimizers.SGD(lr=0.0014, decay=0.0, momentum=0.8, nesterov=True)
 		inv_model.compile(optimizer=sgd, loss='mean_squared_error')
-		print 'inverse code model'
+		print ('inverse code model')
 		inv_model.summary()
 		return inv_model
 
 	def train_inverse_model(self, inverse_model, images, motor_cmd, test_img, test_pos,  batch_size=32, epochs = 1):
 		tensorboard_callback = TensorBoard(log_dir='./logs/inv', histogram_freq=0, write_graph=True, write_images=True)
-		print 'Training inverse model'
+		print ('Training inverse model')
 		inverse_model.fit(images, motor_cmd, validation_data=[test_img, test_pos], epochs=epochs, batch_size=batch_size, verbose=1, shuffle=True, callbacks=[tensorboard_callback])
 		inverse_model.save('./models/inverse_model.h5')
-		print 'Inverse model trained and saved'
+		print ('Inverse model trained and saved')
 
 	def train_inverse_code_model(self, inverse_model, codes, motor_cmd, test_codes, test_pos,  batch_size=32, epochs = 1):
 		tensorboard_callback = TensorBoard(log_dir='./logs/inv_code', histogram_freq=0, write_graph=True, write_images=True)
-		print 'Training inverse model'
+		print ('Training inverse model')
 		inverse_model.fit(codes, motor_cmd, validation_data=[test_codes, test_pos], epochs=epochs, batch_size=batch_size, verbose=1, shuffle=True, callbacks=[tensorboard_callback])
 		inverse_model.save('./models/inverse_code_model.h5')
-		print 'Inverse code model trained and saved'
+		print ('Inverse code model trained and saved')
 
 	def train_inverse_model_on_batch(self, inverse_model, images, motor_cmd, batch_size=1, epochs = 1):
 		inverse_model.fit(images, motor_cmd, epochs=epochs, batch_size=batch_size, verbose=1, shuffle=True)#, callbacks=[showLR()])
 		#inverse_model.train_on_batch(images, motor_cmd)
-		print 'Inverse model trained on batch'
+		print ('Inverse model trained on batch')
 
 	def train_inverse_code_model_on_batch(self, inverse_model, codes, motor_cmd, batch_size=1, epochs = 1):
 		#tensorboard_callback = TensorBoard(log_dir='./logs/inv_code', histogram_freq=0, write_graph=True, write_images=True)
 		inverse_model.fit(codes, motor_cmd, epochs=epochs, batch_size=batch_size, verbose=1, shuffle=True)#, callbacks=[tensorboard_callback])#, callbacks=[showLR()])
-		print 'Inverse code model trained on batch'
+		print ('Inverse code model trained on batch')
 
 #class showLR(self, Callback ) :
 #	def on_epoch_begin(self, epoch, logs=None):
