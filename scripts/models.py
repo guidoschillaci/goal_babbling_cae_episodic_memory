@@ -8,7 +8,7 @@ from tensorflow.python.keras.callbacks import TensorBoard, Callback
 from tensorflow.python.keras.optimizers import Adam, SGD, Adadelta
 from tensorflow.python.keras import optimizers
 
-import cPickle, h5py, gzip
+import pickle, h5py, gzip
 import cv2
 import numpy as np
 from util import x_lims, y_lims, z_lims, speed_lim
@@ -34,7 +34,7 @@ class Models():
 		commands = []
 		test_pos = []
 		with gzip.open(file_name, 'rb') as memory_file:
-			memories = cPickle.load(memory_file)
+			memories = pickle.load(memory_file)
 			print 'converting data...'
 			count = 0
 			for memory in memories:
@@ -211,7 +211,7 @@ class Models():
 		kmeans = None
 		if os.path.isfile(filename):
 			print 'Loading existing KMeans...'
-			kmeans = cPickle.load(open(filename, 'rb'))
+			kmeans = pickle.load(open(filename, 'rb'))
 
 		else: 
 			print 'Could not find KMeans file.'
@@ -232,7 +232,7 @@ class Models():
 	#			kmeans = kmeans.partial_fit(train_images_codes[i:i+batch_size])
 			kmeans = kmeans.fit(train_images_codes)
 			print 'saving k-means'
-			cPickle.dump(kmeans, open(filename, 'wb'))
+			pickle.dump(kmeans, open(filename, 'wb'))
 
 		return kmeans
 

@@ -1,6 +1,6 @@
 
 import gzip
-import cPickle
+import pickle
 import cv2
 import re
 import numpy as np
