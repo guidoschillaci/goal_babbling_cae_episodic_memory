@@ -323,10 +323,10 @@ class Models():
 	#	x = UpSampling2D((max_pool_size, max_pool_size))(x)
 		ims = 8
 		first = True
-		x = Dense(ims*ims, activation='relu')(encoded)
+		x = Dense(int(ims*ims), activation='relu')(encoded)
 		x = Reshape(target_shape=(ims, ims, 1))(x) #-12
 		while ims!=image_size:
-			x = Conv2D(ims*ims/2, (conv_size, conv_size), activation='relu', padding='same')(x)
+			x = Conv2D(int(ims*ims/2), (conv_size, conv_size), activation='relu', padding='same')(x)
 			x = UpSampling2D((max_pool_size, max_pool_size))(x)
 			ims = ims*max_pool_size
 		decoded = Conv2D(channels, (conv_size, conv_size), activation = 'sigmoid', padding='same', name= 'decoded')(x)
@@ -411,10 +411,10 @@ class Models():
 
 		ims = 8
 		first = True
-		x = Dense(ims*ims, activation='relu')(x)
+		x = Dense(int(ims*ims), activation='relu')(x)
 		x = Reshape(target_shape=(ims, ims, 1))(x) #-12
 		while ims!=image_size:
-			x = Conv2D(ims*ims*max_pool_size, (conv_size, conv_size), activation='relu', padding='same')(x)
+			x = Conv2D(int(ims*ims*max_pool_size), (conv_size, conv_size), activation='relu', padding='same')(x)
 			x = UpSampling2D((max_pool_size, max_pool_size))(x)
 			ims = ims*max_pool_size
 		decoded = Conv2D(channels, (conv_size, conv_size), padding='same', name= 'decoded')(x)
