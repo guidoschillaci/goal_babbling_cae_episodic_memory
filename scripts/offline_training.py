@@ -29,6 +29,18 @@ from minisom import MiniSom
 
 import cv2
 
+# Limit GPU memory usage
+MemoryFraction = 0.1
+if tf.__version__ < "1.8.0":
+    config = tf.ConfigProto()
+    config.gpu_options.per_process_gpu_memory_fraction = MemoryFraction
+    session = tf.Session(config=config)
+else:
+    config = tf.compat.v1.ConfigProto()
+    config.gpu_options.per_process_gpu_memory_fraction = MemoryFraction
+    session = tf.compat.v1.Session(config=config)
+
+
 
 models = Models()
 
