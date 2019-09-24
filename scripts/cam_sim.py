@@ -8,7 +8,7 @@ import numpy as np
 import re
 #from goal_babbling.msg import Position
 import gzip 
-import cPickle
+import pickle
 from util import Position
 #from sensor_msgs.msg import Image
 #from cv_bridge import CvBridge, CvBridgeError
@@ -99,7 +99,7 @@ class Cam_sim():
 
 def extract_images(file_name):
 	with gzip.open(file_name, 'rb') as memory_file:
-		memories = cPickle.load(memory_file)
+		memories = pickle.load(memory_file)
 		print ('extracting images...')
 		count = 0
 		for memory in memories:
@@ -143,7 +143,7 @@ if __name__ == '__main__':
 			counter=counter+1
 			print (counter)
 		with gzip.open(compressed_dataset, 'wb') as file:
-			cPickle.dump(samples, file, protocol=2)
+			pickle.dump(samples, file, protocol=2)
 		print ('saved')
 		sys.exit(1)
 
