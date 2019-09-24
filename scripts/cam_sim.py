@@ -100,7 +100,7 @@ class Cam_sim():
 def extract_images(file_name):
 	with gzip.open(file_name, 'rb') as memory_file:
 		memories = cPickle.load(memory_file)
-		print 'extracting images...'
+		print ('extracting images...')
 		count = 0
 		for memory in memories:
 			image = memory['image']
@@ -116,11 +116,11 @@ if __name__ == '__main__':
 
 	compressed_dataset = path+'/compressed_dataset.pkl'
 	if os.path.isfile(compressed_dataset):
-		print 'compressed dataset already exists'
+		print ('compressed dataset already exists')
 		extract_images(compressed_dataset)
 
 	else:
-		print 'creating compressed dataset'
+		print ('creating compressed dataset')
 
 		samples = []
 		counter=0
@@ -141,9 +141,9 @@ if __name__ == '__main__':
 			samples.append({'image': cv_img, 'position': p, 'command': p})
 			#print int(p.x), ' ', int(p.y)
 			counter=counter+1
-			print counter
+			print (counter)
 		with gzip.open(compressed_dataset, 'wb') as file:
 			cPickle.dump(samples, file, protocol=2)
-		print 'saved'
+		print ('saved')
 		sys.exit(1)
 

@@ -1,0 +1,4 @@
+memory_update_probability,memory_size,days_in_window,memory_update_strategy
+0.05,500.0,1.0,0.0
+0.05,500.0,1.0,1.0
+0.05,500.0,1.0,2.0
