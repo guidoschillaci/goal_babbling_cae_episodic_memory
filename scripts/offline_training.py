@@ -30,16 +30,7 @@ from minisom import MiniSom
 import cv2
 
 # Limit GPU memory usage
-MemoryFraction = 0.20
-if tf.__version__ < "1.8.0":
-    config = tf.ConfigProto()
-    config.gpu_options.per_process_gpu_memory_fraction = MemoryFraction
-    session = tf.Session(config=config)
-else:
-    config = tf.compat.v1.ConfigProto()
-    config.gpu_options.per_process_gpu_memory_fraction = MemoryFraction
-    session = tf.compat.v1.Session(config=config)
-
+use_gpu_fraction = 0.20
 
 
 models = Models()
@@ -160,4 +151,6 @@ class OfflineTraining():
 		'''
 
 if __name__ == '__main__':
-	OfflineTraining().run()
+	ot = OfflineTraining()
+	ot.configure_keras(use_gpu_fraction)
+	ot.run()
