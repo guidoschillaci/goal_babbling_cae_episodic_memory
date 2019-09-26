@@ -30,7 +30,7 @@ from minisom import MiniSom
 import cv2
 
 # Limit GPU memory usage
-use_gpu_fraction = 0.20
+use_gpu_fraction = 0.40
 
 
 models = Models()
