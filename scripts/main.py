@@ -18,7 +18,7 @@ from sklearn.cluster import KMeans
 import random
 import os
 import shutil
-import cPickle
+import pickle
 import gzip
 import datetime
 import numpy as np
@@ -516,14 +516,14 @@ class GoalBabbling():
 		#som_file.close()
 
 		#np.savetxt('./models/log_goal_pos.txt', self.log_goal_pos)
-		cPickle.dump(self.log_goal_pos, open('./models/log_goal_pos.txt', 'wb'))
+		pickle.dump(self.log_goal_pos, open('./models/log_goal_pos.txt', 'wb'))
 		#go_file = open('./models/log_goal_pos.txt','w')
 		#go_file.write(str(self.log_goal_pos))
 		#go_file.close()
 
 		#np.savetxt('./models/log_curr_pos.txt', self.log_curr_pos)
 #		cPickle.dump(self.log_curr_pos, open('./models/log_curr_pos.txt', 'wb'))
-		cPickle.dump(self.log_goal_pred, open('./models/log_goal_pred.txt', 'wb'))
+		pickle.dump(self.log_goal_pred, open('./models/log_goal_pred.txt', 'wb'))
 		#cu_file = open('./models/log_curr_pos.txt','w')
 		#cu_file.write(str(self.log_curr_pos))
 		#cu_file.close()
