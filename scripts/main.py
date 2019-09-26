@@ -34,11 +34,11 @@ import tensorflow as tf
 
 if tf.__version__ < "1.8.0":
     config = tf.ConfigProto()
-    config.gpu_options.per_process_gpu_memory_fraction = 0.75
+    config.gpu_options.per_process_gpu_memory_fraction = 0.30
     session = tf.Session(config=config)
 else:
     config = tf.compat.v1.ConfigProto()
-    config.gpu_options.per_process_gpu_memory_fraction = 0.75
+    config.gpu_options.per_process_gpu_memory_fraction = 0.30
     session = tf.compat.v1.Session(config=config)
 
 
