@@ -593,9 +593,11 @@ class GoalBabbling():
 		#del self.history_pos
 
 		# reset
-		print('reset tf session')
-		tf.reset_default_graph()
-		print('ts session reset correctly')
+		print('Clearing TF session')
+		if tf.__version__ < "1.8.0":
+			tf.reset_default_graph()
+		else:
+			tf.compat.v1.reset_default_graph()
 
 	def Exit_call(self, signal, frame):
 		self.goto_starting_pos()
@@ -618,8 +620,11 @@ class GoalBabbling():
 if __name__ == '__main__':
 
 	# reset
-	tf.reset_default_graph()
-	print('ts session reset correctly')
+	print('Clearing TF session')
+	if tf.__version__ < "1.8.0":
+		tf.reset_default_graph()
+	else:
+		tf.compat.v1.reset_default_graph()
 
 	goal_babbling = GoalBabbling()
 	os.chdir('experiments')
