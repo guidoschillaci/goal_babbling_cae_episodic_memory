@@ -362,9 +362,9 @@ class Models():
 
 		autoencoder.fit(train_data, train_data, epochs=cae_epochs, batch_size=batch_size, shuffle=True, callbacks=[tensorboard_callback], verbose=1)
 		
-		autoencoder.save( './models/autoencoder.h5')
-		encoder.save('./models/encoder.h5')
-		decoder.save('./models/decoder.h5')
+		autoencoder.save( './pretrained_models/autoencoder.h5')
+		encoder.save('./pretrained_models/encoder.h5')
+		decoder.save('./pretrained_models/decoder.h5')
 		print ('autoencoder trained and saved ')
 
 
