@@ -139,7 +139,7 @@ class GoalBabbling():
 		print ('Loading test dataset ', dataset)
 		self.train_images, self.test_images, self.train_cmds, self.test_cmds, self.train_pos, self.test_pos = models.load_data(dataset, self.image_size, step = self.test_data_step)
 		# load models
-		self.autoencoder, self.encoder, self.decoder = models.load_autoencoder(code_size = self.code_size, image_size = self.image_size, batch_size=self.batch_size, epochs=self.cae_epochs)
+		self.autoencoder, self.encoder, self.decoder = models.load_autoencoder(directory='./models/',code_size = self.code_size, image_size = self.image_size, batch_size=self.batch_size, epochs=self.cae_epochs)
 #		self.forward_model = models.load_forward_model(train=False)
 		self.forward_code_model = models.load_forward_code_model( code_size = self.code_size, train=False)
 		#self.inverse_model = models.load_inverse_model(train=False)
@@ -165,10 +165,7 @@ class GoalBabbling():
 		p.y = int(0)
 		p.z = int(-90)
 		p.speed = int(1800)
-		# send command to the publisher
-		if not self.simulated_data:
-			self.mov_pub.publish(p)
-			rospy.sleep(4)
+
 		self.prev_pos=p
 		#self.run_babbling()
 
@@ -208,9 +205,8 @@ class GoalBabbling():
 
 	def run_babbling(self):
 		p = Position()
-		while not rospy.is_shutdown():
 			
-			
+		for _ in range(self.max_iterations):
 			#test_motor_pred = self.inverse_model.predict([self.test_images[0:self.goal_size*self.goal_size]])
 			#print np.hstack((test_motor_pred,self.test_pos[0:self.goal_size*self.goal_size]))
 
@@ -220,15 +216,14 @@ class GoalBabbling():
 			#self.log_lr_inv.append(K.eval(self.inverse_model.optimizer.lr))
 			#print 'iteration opt inv', K.eval(self.inverse_model.optimizer.iteration)
 			#print 'current lr: ', self.log_lr_inv[-1]
-			
-			print ('Iteration : ', self.iteration)
+		
+			print ('Iteration : ', self.iteration, ' goal_mode ', self.goal_selection_mode)
 			self.iteration = self.iteration+1
 			if self.iteration > self.max_iterations:
 				self.save_models()
 				return
 
 			# select a goal
-			print ('goal_mode ', self.goal_selection_mode)
 			self.current_goal_idx, self.current_goal_x, self.current_goal_y = self.interest_model.select_goal()
 			if self.goal_selection_mode =='kmeans':
 				self.goal_code  = self.kmeans.cluster_centers_[self.current_goal_idx].reshape(1, self.code_size)
@@ -237,10 +232,10 @@ class GoalBabbling():
 				#self.goal_image=np.asarray(cv2.imread(self.goal_db[self.current_goal_idx], 0)).reshape(1, self.image_size, self.image_size, self.channels).astype('float32') / 255
 				self.goal_image = self.test_images[self.current_goal_idx].reshape(1, self.image_size, self.image_size, self.channels)
 				self.goal_code  = self.encoder.predict(self.goal_image)
-				
+			
 			elif self.goal_selection_mode =='som':
 				self.goal_code  = self.goal_som._weights[self.current_goal_x, self.current_goal_y].reshape(1, self.code_size)
-				
+			
 			else:
 				print ('wrong goal selection mode, exit!')
 				sys.exit(1)
@@ -257,7 +252,7 @@ class GoalBabbling():
 				goal_decoded = self.decoder.predict(self.goal_code)
 				####cv2.imshow("CAE Decoded Goal", goal_decoded[0])
 				####cv2.waitKey(1)
-#				motor_pred = self.inverse_model.predict(goal_decoded)
+	#				motor_pred = self.inverse_model.predict(goal_decoded)
 				motor_pred = self.inverse_code_model.predict(self.goal_code)
 			#image_pred = self.forward_model.predict(np.asarray(motor_pred))
 			image_pred = self.decoder.predict(self.forward_code_model.predict(np.asarray(motor_pred)))
@@ -267,10 +262,10 @@ class GoalBabbling():
 			#image_pred_curr = forward_model.predict(np.asarray(prev_cmd))
 			#cv2.imshow("FWD Model Predicted Image curr ", image_pred_curr[0])
 			#cv2.waitKey(1) 
-#			motor_cmd=motor_pred[0]
+	#			motor_cmd=motor_pred[0]
 
-#			p.x = clamp_x(motor_pred[0][0]*x_lims[1])
-#			p.y = clamp_x(motor_pred[0][1]*y_lims[1])
+	#			p.x = clamp_x(motor_pred[0][0]*x_lims[1])
+	#			p.y = clamp_x(motor_pred[0][1]*y_lims[1])
 			noise_x = np.random.normal(0,0.02)
 			noise_y = np.random.normal(0,0.02)
 			p.x = clamp_x((motor_pred[0][0]+noise_x)*x_lims[1])
@@ -289,14 +284,10 @@ class GoalBabbling():
 
 			p.z = int(-90)
 			p.speed = int(1400)
-			if not self.simulated_data:
-				# send command to the publisher
-				self.mov_pub.publish(p)
-				rospy.sleep(6)
-			else:
-				self.create_simulated_data(p, self.prev_pos)
-				self.prev_pos=p
-			
+		
+			self.create_simulated_data(p, self.prev_pos)
+			self.prev_pos=p
+		
 			if self.iteration % 50 == 0:
 				#test_codes= self.encoder.predict(self.test_images[0:self.goal_size*self.goal_size].reshape(self.goal_size*self.goal_size, self.image_size, self.image_size, self.channels))
 				if self.goal_selection_mode == 'db' or self.goal_selection_mode == 'random':
@@ -323,12 +314,12 @@ class GoalBabbling():
 				prediction_error = np.linalg.norm(np.asarray(self.goal_code[:])-np.asarray(prediction_code[:]))
 				self.interest_model.update_competences(self.current_goal_x, self.current_goal_y, prediction_error)
 				#print 'Prediction error: ', prediction_error, ' learning progress: ', self.interest_model.get_learning_progress(self.current_goal_x, self.current_goal_y)
-			
+		
 				self.log_lp.append(np.asarray(deepcopy(self.interest_model.learning_progress)))
 				self.log_goal_id.append(self.current_goal_idx)
 
-				
 			
+		
 			#print self.log_lp
 			# fit models	
 			if len(self.img) > self.batch_size:
@@ -340,7 +331,7 @@ class GoalBabbling():
 							self.history_img = deepcopy(self.img[-(self.batch_size):])
 						self.history_pos= np.vstack((self.history_pos, self.pos[-(self.batch_size):] ))
 						self.history_img= np.vstack((self.history_img, self.img[-(self.batch_size):] ))
-						
+					
 					else:
 						img_io = []
 						pos_io = []
@@ -370,7 +361,7 @@ class GoalBabbling():
 
 					# update convex hulls
 					obs_codes= self.encoder.predict(np.asarray(self.img[-(self.batch_size):]).reshape(self.batch_size, self.image_size, self.image_size, self.channels))
-				
+			
 					#print self.pos[-32:]
 					#print np.asarray(self.pos[-32:]).reshape((32,2))
 					self.convex_hull_inv.add_points(np.asarray(self.pos[-(self.batch_size):]).reshape(((self.batch_size),2)), restart=True)
@@ -390,7 +381,7 @@ class GoalBabbling():
 				else:
 					print ('lenghts not equal')
 
-				
+			
 			if not self.random_cmd_flag and len(self.cmd)>0:
 				#print 'test pos', self.test_positions[0:10]
 				test_p = self.test_pos[self.current_goal_idx]
@@ -610,12 +601,8 @@ class GoalBabbling():
 		p.z = int(-50)
 		p.speed = int(1400)
 		
-		if not self.simulated_data:
-			# send command to the publisher
-			self.mov_pub.publish(p)
-		else:
-			self.create_simulated_data(p, self.prev_pos)
-			self.prev_pos=p
+		self.create_simulated_data(p, self.prev_pos)
+		self.prev_pos=p
 
 if __name__ == '__main__':
 
@@ -651,11 +638,11 @@ if __name__ == '__main__':
 						if not os.path.exists(directory+'models'):
 							os.makedirs(directory+'models')
 
-						shutil.copy('../models/autoencoder.h5', directory+'models/autoencoder.h5')
-						shutil.copy('../models/encoder.h5', directory+'models/encoder.h5')
-						shutil.copy('../models/decoder.h5', directory+'models/decoder.h5')
-						shutil.copy('../models/goal_som.h5', directory+'models/goal_som.h5')
-						shutil.copy('../models/kmeans.sav', directory+'models/kmeans.sav')
+						shutil.copy('../pretrained_models/autoencoder.h5', directory+'models/autoencoder.h5')
+						shutil.copy('../pretrained_models/encoder.h5', directory+'models/encoder.h5')
+						shutil.copy('../pretrained_models/decoder.h5', directory+'models/decoder.h5')
+						shutil.copy('../pretrained_models/goal_som.h5', directory+'models/goal_som.h5')
+						shutil.copy('../pretrained_models/kmeans.sav', directory+'models/kmeans.sav')
 
 						os.chdir(directory)
 						if not os.path.exists('./models/plots'):

@@ -13,12 +13,15 @@ class InterestModel():
 		self.goals_size = goals_size
 		self.initialise_im()
 		self.decay_factor = decay_factor
+		if goals_size <=0:
+			print ("Error: goals_size <=0")
 
 	def initialise_im(self):
 		self.learning_progress= np.resize(self.learning_progress, (self.goals_size*self.goals_size ,))
 		for i in range (0, self.goals_size*self.goals_size):
 			self.pe_history.append([0.0])
 			#self.pe_derivatives.append([0.0])
+		print ("interest model initialised. PE history size: ", len(self.pe_history))
 
 	def select_goal(self):
 		ran = random.random()
@@ -26,13 +29,13 @@ class InterestModel():
 		if ran < 0.85 and np.sum(self.learning_progress)>0: # 70% of the times
 			# select goal with highest interest factor			
 			goal_idx = self.get_most_interesting_goal_index()
-			print ('Selected most interesting goal.')
+			print ('Interest Model: Selected most interesting goal.')
 		else:
 			# select random goal
 			goal_idx = random.randint(0, self.goals_size*self.goals_size-1)
-			print ('Selected random goal.')
+			print ('Interest Model: Selected random goal.')
 
-		goal_x = goal_idx / self.goals_size  
+		goal_x =int( goal_idx / self.goals_size  )
 		goal_y = goal_idx % self.goals_size
 		print ('Goal idx: ', goal_idx, ' x: ', goal_x, ' y: ', goal_y)
 		return goal_idx, goal_x, goal_y
@@ -42,7 +45,9 @@ class InterestModel():
 		# decay all
 		self.learning_progress = self.decay_factor * self.learning_progress
 
-		goal_id = goal_id_x * self.goals_size + goal_id_y
+		goal_id = int(goal_id_x * self.goals_size + goal_id_y)
+		if (goal_id <0 or goal_id>(self.goals_size*self.goals_size)):
+			print ("Interest model error, wrong goal id: ", goal_id)
 		# self.interest_factors -= 0.05 # decrease all
 		#low_vals = self.learning_progress < 0
 		#self.learning_progress[low_vals] = 0

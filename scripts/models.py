@@ -17,6 +17,8 @@ from minisom import MiniSom
 
 from sklearn.cluster import KMeans
 
+import tensorflow as tf
+
 class Models():
 
 	def __init__(self):
@@ -83,6 +85,7 @@ class Models():
 		train_cmds = commands
 		test_pos = positions[indices]
 		train_pos = positions
+		print ("number of train images: ", len(train_images))
 		print ("number of test images: ", len(test_images))
 
 		return train_images, test_images, train_cmds, test_cmds, train_pos, test_pos
@@ -100,7 +103,11 @@ class Models():
 		if os.path.isfile(cae_file) and os.path.isfile(e_file) and os.path.isfile(d_file): # trained cae model already exists
 			# load convolutional autoencoder 
 			print ('Loading existing pre-trained autoencoder: ', cae_file)
-			K.clear_session()
+			print('Clearing TF session')
+			if tf.__version__ < "1.8.0":
+				tf.reset_default_graph()
+			else:
+				tf.compat.v1.reset_default_graph()
 			autoencoder = load_model(cae_file)
 			# Create a separate encoder model
 			encoder_inp = Input(shape=(image_size, image_size, channels))
