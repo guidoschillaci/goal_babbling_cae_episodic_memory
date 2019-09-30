@@ -219,9 +219,9 @@ class GoalBabbling():
 		
 			print ('Iteration : ', self.iteration, ' goal_mode ', self.goal_selection_mode)
 			self.iteration = self.iteration+1
-			if self.iteration > self.max_iterations:
-				self.save_models()
-				return
+#			if self.iteration > self.max_iterations:
+#				self.save_models()
+#				return
 
 			# select a goal
 			self.current_goal_idx, self.current_goal_x, self.current_goal_y = self.interest_model.select_goal()
@@ -404,6 +404,9 @@ class GoalBabbling():
 				#self.log_curr_img[self.current_goal_idx].append([c_code[0][0],c_code[0][1], c_code[0][2],c_code[0][3] ])
 				#self.log_goal_img[self.current_goal_idx].append([g_code[0][0],g_code[0][1] ])
 				#self.log_curr_img[self.current_goal_idx].append([c_code[0][0],c_code[0][1] ])
+
+		print ('Saving models')
+		self.save_models()
 
 	def create_simulated_data(self, cmd, pos):
 		self.lock.acquire()
