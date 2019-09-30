@@ -496,13 +496,13 @@ class GoalBabbling():
 		####cv2.destroyAllWindows()
 		#print 'Dataset saved to ', filename
 
-		self.autoencoder.save('./models/autoencoder.h5')
-		self.encoder.save('./models/encoder.h5')
-		self.decoder.save('./models/decoder.h5')
+		self.autoencoder.save('./models/autoencoder.h5', overwrite=True)
+		self.encoder.save('./models/encoder.h5', overwrite=True)
+		self.decoder.save('./models/decoder.h5', overwrite=True)
 #		self.inverse_model.save('./models/inverse_model.h5')
-		self.inverse_code_model.save('./models/inverse_code_model.h5')
+		self.inverse_code_model.save('./models/inverse_code_model.h5', overwrite=True)
 		#self.forward_model.save('./models/gb/forward_model.h5')
-		self.forward_code_model.save('./models/forward_code_model.h5')
+		self.forward_code_model.save('./models/forward_code_model.h5', overwrite=True)
 
 		#trained_som_weights = self.goal_som.get_weights().copy()
 		#som_file = h5py.File('./models/goal_som.h5', 'w')
