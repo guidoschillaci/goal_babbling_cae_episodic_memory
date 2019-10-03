@@ -39,7 +39,7 @@ class OfflineTraining():
 
 	def __init__(self):
 		## parameters
-		self.cae_epochs =20 # training epochs for convolutional autoencoder
+		self.cae_epochs =50 # training epochs for convolutional autoencoder
 		self.fwd_epochs =10 # training epochs for forward model
 		self.inv_epochs =2 # training epochs for inverse model
 		self.batch_size = 16
