@@ -2,11 +2,11 @@
 # Guido Schillaci <guido.schillaci@santannapisa.it>
 
 
-from tensorflow.python.keras.layers import Input, Dense, Reshape,  Conv2D, Conv2DTranspose, MaxPooling2D, UpSampling2D, Activation
-from tensorflow.python.keras.layers.merge import concatenate
-from tensorflow.python.keras.models import Model, Sequential, load_model
-from tensorflow.python.keras.callbacks import TensorBoard
-from tensorflow.python.keras.optimizers import Adam
+from tensorflow.keras.layers import Input, Dense, Reshape,  Conv2D, Conv2DTranspose, MaxPooling2D, UpSampling2D, Activation
+from tensorflow.keras.layers.merge import concatenate
+from tensorflow.keras.models import Model, Sequential, load_model
+from tensorflow.keras.callbacks import TensorBoard
+from tensorflow.keras.optimizers import Adam
 import gzip
 import matplotlib.pyplot as plt
 import os
