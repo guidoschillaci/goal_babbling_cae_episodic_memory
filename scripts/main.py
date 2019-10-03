@@ -34,11 +34,11 @@ import tensorflow as tf
 
 if tf.__version__ < "1.8.0":
     config = tf.ConfigProto()
-    config.gpu_options.per_process_gpu_memory_fraction = 0.30
+    config.gpu_options.per_process_gpu_memory_fraction = 0.40
     session = tf.Session(config=config)
 else:
     config = tf.compat.v1.ConfigProto()
-    config.gpu_options.per_process_gpu_memory_fraction = 0.30
+    config.gpu_options.per_process_gpu_memory_fraction = 0.40
     session = tf.compat.v1.Session(config=config)
 
 
@@ -619,7 +619,7 @@ if __name__ == '__main__':
 	goal_babbling = GoalBabbling()
 	os.chdir('experiments')
 	exp_iteration_size = 5
-	exp_type = ['db', 'random', 'som']#, 'kmeans']
+	exp_type = ['db', 'som', 'random']#, 'kmeans']
 	history_size = [0, 10, 20]
 	prob = [0.1, 0.01]
 
