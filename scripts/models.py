@@ -1,11 +1,11 @@
 # author Guido Schillaci, Dr.rer.nat. - Humboldt-Universitaet zu Berlin
 # Guido Schillaci <guido.schillaci@informatik.hu-berlin.de>
 
-from tensorflow.keras.layers import Input, Dense, Dropout, Reshape, Flatten, Conv2D, Conv2DTranspose, MaxPooling2D, UpSampling2D, Activation, BatchNormalization
-from tensorflow.keras.layers.merge import concatenate
-from tensorflow.keras.models import Model, Sequential, load_model, Input
-from tensorflow.keras.callbacks import TensorBoard, Callback
-from tensorflow.keras.optimizers import Adam, SGD, Adadelta
+from tensorflow.python.keras.layers import Input, Dense, Dropout, Reshape, Flatten, Conv2D, Conv2DTranspose, MaxPooling2D, UpSampling2D, Activation, BatchNormalization
+#from tensorflow.python.keras.layers.merge import concatenate
+from tensorflow.python.keras.models import Model, Sequential, load_model, Input
+from tensorflow.python.keras.callbacks import TensorBoard, Callback
+#from tensorflow.keras.optimizers import Adam, SGD, Adadelta
 from tensorflow.keras import optimizers
 
 import pickle, h5py, gzip
