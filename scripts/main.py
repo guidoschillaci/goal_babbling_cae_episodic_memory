@@ -217,7 +217,7 @@ class GoalBabbling():
 			#print 'iteration opt inv', K.eval(self.inverse_model.optimizer.iteration)
 			#print 'current lr: ', self.log_lr_inv[-1]
 		
-			print ('Iteration : ', self.iteration, ' goal_mode ', self.goal_selection_mode)
+			print ('Mode ', self.goal_selection_mode, ' hist_size ', str(self.history_size), ' prob ', str(self.history_buffer_update_prob), ' iteration : ', self.iteration)
 			self.iteration = self.iteration+1
 #			if self.iteration > self.max_iterations:
 #				self.save_models()
