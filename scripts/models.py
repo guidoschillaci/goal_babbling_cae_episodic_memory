@@ -245,7 +245,7 @@ class Models():
 
 	def load_som(self, directory = './', filename = 'goal_som.h5', encoder = None, train_images = None,  goal_size = 3):
 		filename = directory + filename
-
+		print ('Looking for som file: ', filename)
 		goal_som = None
 		if os.path.isfile(filename):
 			print ('Loading existing trained SOM...')

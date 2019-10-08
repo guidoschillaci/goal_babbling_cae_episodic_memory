@@ -141,13 +141,13 @@ class GoalBabbling():
 		# load models
 		self.autoencoder, self.encoder, self.decoder = models.load_autoencoder(directory='./models/',code_size = self.code_size, image_size = self.image_size, batch_size=self.batch_size, epochs=self.cae_epochs)
 #		self.forward_model = models.load_forward_model(train=False)
-		self.forward_code_model = models.load_forward_code_model( code_size = self.code_size, train=False)
+		self.forward_code_model = models.load_forward_code_model( directory='./models/', code_size = self.code_size, train=False)
 		#self.inverse_model = models.load_inverse_model(train=False)
-		self.inverse_code_model = models.load_inverse_code_model(code_size = self.code_size, train=False)
+		self.inverse_code_model = models.load_inverse_code_model(directory='./models/', code_size = self.code_size, train=False)
 		if self.goal_selection_mode =='kmeans':
 			self.kmeans = models.load_kmeans()
 		if self.goal_selection_mode =='som':
-			self.goal_som = models.load_som(encoder = self.encoder, goal_size = self.goal_size)
+			self.goal_som = models.load_som(directory='./models/', encoder = self.encoder, goal_size = self.goal_size)
 
 		# initialise convex hulls (debug stuff)
 		np.random.seed(10) # generate always the same random input to the convex hull
